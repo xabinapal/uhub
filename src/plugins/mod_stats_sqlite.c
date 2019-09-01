@@ -156,13 +156,13 @@ static void on_user_logout(struct plugin_handle* plugin, struct plugin_user* use
 	sql_update_user(data, user);
 }
 
-static plugin_st on_search(struct plugin_handle*, struct plugin_user* from, const char* data)
+static plugin_st on_search(struct plugin_handle* plugin, struct plugin_user* from, const char* search)
 {
 	struct stats_data* data = (struct stats_data*) plugin->ptr;
 	sql_update_user(data, from);
 }
 
-static plugin_st on_p2p_connect(struct plugin_handle*, struct plugin_user* from, struct plugin_user* to)
+static plugin_st on_p2p_connect(struct plugin_handle* plugin, struct plugin_user* from, struct plugin_user* to)
 {
 	struct stats_data* data = (struct stats_data*) plugin->ptr;
 	sql_update_user(data, from);
