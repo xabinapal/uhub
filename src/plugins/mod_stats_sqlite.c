@@ -40,7 +40,7 @@ static int null_callback(void* ptr, int argc, char **argv, char **colName) { ret
 static int sql_execute(struct stats_data* sql, int (*callback)(void* ptr, int argc, char **argv, char **colName), void* ptr, const char* sql_fmt, ...)
 {
 	va_list args;
-	char query[MAX_HISTORY_SIZE];
+	char query[1024];
 	char* errMsg;
 	int rc;
 
