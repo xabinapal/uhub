@@ -135,9 +135,8 @@ static struct stats_data* parse_config(const char* line, struct plugin_handle* p
 	return data;
 }
 
-static void on_user_login(struct plugin_handle* plugin, struct plugin_user* user)
+static void sql_update_user(struct stats_data* data, struct plugin_user* user)
 {
-	struct stats_data* data = (struct stats_data*) plugin->ptr;
 	struct hub_user* hub_user = (struct hub_user*) user;
 	sql_execute(data, null_callback, NULL, "INSERT OR REPLACE INTO user_stats (cid, logged, shared_size, shared_files) VALUES('%s', 1, '%" PRIu64 "', '%zu');",
 			user->cid,
@@ -145,11 +144,29 @@ static void on_user_login(struct plugin_handle* plugin, struct plugin_user* user
 			hub_user->limits.shared_files);
 }
 
+static void on_user_login(struct plugin_handle* plugin, struct plugin_user* user)
+{
+	struct stats_data* data = (struct stats_data*) plugin->ptr;
+	sql_update_user(data, user);
+}
+
 static void on_user_logout(struct plugin_handle* plugin, struct plugin_user* user, const char* reason)
 {
 	struct stats_data* data = (struct stats_data*) plugin->ptr;
-	struct hub_user* hub_user = (struct hub_user*) user;
-	sql_execute(data, null_callback, NULL, "INSERT OR REPLACE INTO user_stats (cid, logged, shared_size, shared_files) VALUES('%s', 0, '0', '0');", user->cid);
+	sql_update_user(data, user);
+}
+
+static plugin_st on_search(struct plugin_handle*, struct plugin_user* from, const char* data)
+{
+	struct stats_data* data = (struct stats_data*) plugin->ptr;
+	sql_update_user(data, from);
+}
+
+static plugin_st on_p2p_connect(struct plugin_handle*, struct plugin_user* from, struct plugin_user* to)
+{
+	struct stats_data* data = (struct stats_data*) plugin->ptr;
+	sql_update_user(data, from);
+	sql_update_user(data, to);
 }
 
 int plugin_register(struct plugin_handle* plugin, const char* config)
@@ -159,6 +176,8 @@ int plugin_register(struct plugin_handle* plugin, const char* config)
 
 	plugin->funcs.on_user_login = on_user_login;
 	plugin->funcs.on_user_logout = on_user_logout;
+	plugin->funcs.on_search = on_search;
+	plugin->funcs.on_p2p_connect = on_p2p_connect;
 
 	data = parse_config(config, plugin);
 	if (!data)
