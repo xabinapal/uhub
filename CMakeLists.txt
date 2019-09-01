@@ -121,6 +121,7 @@ add_library(mod_chat_only MODULE ${PROJECT_SOURCE_DIR}/plugins/mod_chat_only.c)
 add_library(mod_topic MODULE ${PROJECT_SOURCE_DIR}/plugins/mod_topic.c)
 add_library(mod_no_guest_downloads MODULE ${PROJECT_SOURCE_DIR}/plugins/mod_no_guest_downloads.c)
 add_library(mod_auth_sqlite MODULE ${PROJECT_SOURCE_DIR}/plugins/mod_auth_sqlite.c)
+add_library(mod_stats_sqlite MODULE ${PROJECT_SOURCE_DIR}/plugins/mod_stats_sqlite.c)
 
 set_target_properties(
 	mod_example
@@ -133,6 +134,7 @@ set_target_properties(
 	mod_chat_only
 	mod_no_guest_downloads
 	mod_topic
+	mod_stats_sqlite
 	PROPERTIES PREFIX "")
 
 target_link_libraries(uhub ${CMAKE_DL_LIBS} adc network utils)
@@ -148,6 +150,7 @@ target_link_libraries(mod_no_guest_downloads utils)
 target_link_libraries(mod_chat_only utils)
 target_link_libraries(mod_logging network utils)
 target_link_libraries(mod_topic utils)
+target_link_libraries(mod_stats_sqlite utils)
 target_link_libraries(utils network)
 
 if(WIN32)
@@ -239,7 +242,7 @@ endif()
 
 if (UNIX)
 	install( TARGETS uhub uhub-passwd RUNTIME DESTINATION bin )
-	install( TARGETS mod_example mod_welcome mod_logging mod_auth_simple mod_auth_sqlite mod_chat_history mod_chat_history_sqlite mod_chat_only mod_topic mod_no_guest_downloads DESTINATION /usr/lib/uhub/ OPTIONAL )
+	install( TARGETS mod_example mod_welcome mod_logging mod_auth_simple mod_auth_sqlite mod_chat_history mod_chat_history_sqlite mod_chat_only mod_topic mod_no_guest_downloads mod_stats_sqlite DESTINATION /usr/lib/uhub/ OPTIONAL )
 	install( FILES ${CMAKE_SOURCE_DIR}/doc/uhub.conf ${CMAKE_SOURCE_DIR}/doc/plugins.conf ${CMAKE_SOURCE_DIR}/doc/rules.txt ${CMAKE_SOURCE_DIR}/doc/motd.txt DESTINATION /etc/uhub OPTIONAL )
 endif()
 
