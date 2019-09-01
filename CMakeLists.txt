@@ -150,7 +150,7 @@ target_link_libraries(mod_no_guest_downloads utils)
 target_link_libraries(mod_chat_only utils)
 target_link_libraries(mod_logging network utils)
 target_link_libraries(mod_topic utils)
-target_link_libraries(mod_stats_sqlite utils)
+target_link_libraries(mod_stats_sqlite ${SQLITE3_LIBRARIES} utils)
 target_link_libraries(utils network)
 
 if(WIN32)
