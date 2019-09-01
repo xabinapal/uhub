@@ -219,6 +219,8 @@ extern void user_support_add(struct hub_user* user, int fourcc);
  */
 extern void user_support_remove(struct hub_user* user, int fourcc);
 
+extern const char* user_get_cid(struct hub_user* user);
+
 extern const char* user_get_address(struct hub_user* user);
 
 /**

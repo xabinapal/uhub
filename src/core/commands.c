@@ -403,6 +403,14 @@ static int command_myip(struct command_base* cbase, struct hub_user* user, struc
 	return command_status(cbase, user, cmd, buf);
 }
 
+static int command_getcid(struct command_base* cbase, struct hub_user* user, struct hub_command* cmd)
+{
+	struct cbuffer* buf = cbuf_create(128);
+	struct hub_command_arg_data* arg = hub_command_arg_next(cmd, type_user);
+	cbuf_append_format(buf, "\"%s\" has CID \"%s\"", arg->data.user->id.nick, user_get_cid(arg->data.user));
+	return command_status(cbase, user, cmd, buf);
+}
+
 static int command_getip(struct command_base* cbase, struct hub_user* user, struct hub_command* cmd)
 {
 	struct cbuffer* buf = cbuf_create(128);
@@ -595,6 +603,7 @@ void commands_builtin_add(struct command_base* cbase)
 {
 	ADD_COMMAND("broadcast",  9, "+m",auth_cred_operator,  command_broadcast,"Send a message to all users"  );
 	ADD_COMMAND("getip",      5, "u", auth_cred_operator,  command_getip,    "Show IP address for a user"   );
+	ADD_COMMAND("getcid",     6, "u", auth_cred_operator,  command_getcid,   "Show CID for a user"          );
 	ADD_COMMAND("help",       4, "?c",auth_cred_guest,     command_help,     "Show this help message."      );
 	ADD_COMMAND("kick",       4, "u", auth_cred_operator,  command_kick,     "Kick a user"                  );
 	ADD_COMMAND("log",        3, "?m",auth_cred_operator,  command_log,      "Display log"                  ); // fail
