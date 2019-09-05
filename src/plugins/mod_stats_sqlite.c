@@ -153,7 +153,11 @@ static void on_user_login(struct plugin_handle* plugin, struct plugin_user* user
 static void on_user_logout(struct plugin_handle* plugin, struct plugin_user* user, const char* reason)
 {
 	struct stats_data* data = (struct stats_data*) plugin->ptr;
-	sql_update_user(data, user);
+	struct hub_user* hub_user = (struct hub_user*) user;
+	sql_execute(data, null_callback, NULL, "INSERT OR REPLACE INTO user_stats (cid, logged, shared_size, shared_files) VALUES('%s', 0, '%" PRIu64 "', '%zu');",
+			user->cid,
+			hub_user->limits.shared_size,
+			hub_user->limits.shared_files);
 }
 
 static plugin_st on_search(struct plugin_handle* plugin, struct plugin_user* from, const char* search)
