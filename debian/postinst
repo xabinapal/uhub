@@ -1,0 +1,10 @@
+#!/bin/sh
+
+set -e
+
+if [ "$1" = configure ]; then
+    addgroup --system uhub
+    adduser --system uhub --ingroup uhub --home /nonexistent --no-create-home
+fi
+
+#DEBHELPER#

@@ -1,3 +1,11 @@
+uhub (0.5.1-1nlp1) jammy; urgency=low
+
+  * Updated upstream version.
+  * Updated packaging standards version.
+  * Removed init.d scripts and migrate to systemd.
+
+ -- Xabier Napal <xnapal@navarralanparty.org>  Sun, 20 Aug 2023 10:56:12 +0200
+
 uhub (0.3.2-1) unstable; urgency=low
 
   * Updated upstream version.

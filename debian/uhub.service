@@ -1,0 +1,17 @@
+[Unit]
+Description=High performance ADC peer-to-peer hub for the ADC network.
+After=network-online.target
+Wants=network-online.target
+Documentation=man:uhub(1)
+Documentation=man:uhub-passwd(1)
+Documentation=https://uhub.org
+
+[Service]
+Type=simple
+User=uhub
+Group=uhub
+LimitNOFILE=65536
+ExecStart=/usr/bin/uhub
+
+[Install]
+WantedBy=multi-user.target
